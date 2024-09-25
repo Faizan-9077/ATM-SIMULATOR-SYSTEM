@@ -242,14 +242,13 @@ public class SignupOne extends JFrame implements ActionListener {
 
             if (rs.next()) {
                     JOptionPane.showMessageDialog(null, "Record already exists!");
+                    clearForm();
             } else {
                 String query = "INSERT INTO signup VALUES('" + formno + "', '" + name + "', '" + fname + "', '" + dob + "', '" + gender + "', '" + email + "', '" + marital + "', '" + address + "', '" + city + "', '" + state + "', '" + pin + "')";
                 c.s.executeUpdate(query);
 
-                JOptionPane.showMessageDialog(null, "Record added successfully!");
-                next.setEnabled(false);
-                clearForm();
-                next.setEnabled(true);
+                setVisible(false);
+                new SignupTwo(formno).setVisible(true);
             }
         }
         
