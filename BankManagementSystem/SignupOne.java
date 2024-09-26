@@ -178,7 +178,7 @@ public class SignupOne extends JFrame implements ActionListener {
     }
 
     private void updateFormNumber() {
-        int randomNum = ThreadLocalRandom.current().nextInt(1000, 10000); // range [1000, 10000)
+        int randomNum = ThreadLocalRandom.current().nextInt(1000, 10000);
         formnoLabel.setText("APPLICATION FORM NO. " + randomNum);
     }
 

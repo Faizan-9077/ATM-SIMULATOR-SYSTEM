@@ -1,19 +1,23 @@
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
+import java.util.concurrent.ThreadLocalRandom;
 
-public class SignupThree extends JFrame{
+public class SignupThree extends JFrame implements ActionListener {
 
     JRadioButton r1, r2, r3, r4;
     JCheckBox c1, c2, c3, c4, c5, c6, c7;
-    
-    SignupThree() {
+    JButton submit, cancel;
+    JLabel number, pnumber;
+    String formno, fullCardNumber, fullPIN;
+
+    SignupThree(String formno) {
+        this.formno = formno;
 
         setLayout(null);
-        setBackground(Color.WHITE);
+        getContentPane().setBackground(Color.WHITE);
         setSize(850, 820);
         setLocation(350, 0);
-        setVisible(true);
-
 
         JLabel l1 = new JLabel("Page 3: Account Details");
         l1.setFont(new Font("Raleway", Font.BOLD, 22));
@@ -60,7 +64,8 @@ public class SignupThree extends JFrame{
         card.setBounds(100, 300, 200, 30);
         add(card);
 
-        JLabel number = new JLabel("XXXX-XXXX-XXXX-4184");
+        fullCardNumber = generateCardNumber(); 
+        number = new JLabel("XXXX-XXXX-XXXX-" + fullCardNumber.substring(12,16)); 
         number.setFont(new Font("Raleway", Font.BOLD, 22));
         number.setBounds(330, 300, 300, 30);
         add(number);
@@ -75,7 +80,8 @@ public class SignupThree extends JFrame{
         pin.setBounds(100, 370, 200, 30);
         add(pin);
 
-        JLabel pnumber = new JLabel("XXXX");
+        fullPIN = generatePIN(); 
+        pnumber = new JLabel("XXXX"); 
         pnumber.setFont(new Font("Raleway", Font.BOLD, 22));
         pnumber.setBounds(330, 370, 300, 30);
         add(pnumber);
@@ -88,11 +94,140 @@ public class SignupThree extends JFrame{
         JLabel services = new JLabel("Services Required:");
         services.setFont(new Font("Raleway", Font.BOLD, 22));
         services.setBounds(100, 450, 250, 30);
-        add(services);// 16:46
-        
+        add(services);
+
+        c1 = new JCheckBox("ATM CARD");
+        c1.setBackground(Color.WHITE);
+        c1.setFont(new Font("Raleway", Font.BOLD, 16));
+        c1.setOpaque(true);
+        c1.setBounds(100, 500, 200, 30);
+        add(c1);
+
+        c2 = new JCheckBox("Internet Banking");
+        c2.setBackground(Color.WHITE);
+        c2.setFont(new Font("Raleway", Font.BOLD, 16));
+        c2.setOpaque(true);
+        c2.setBounds(350, 500, 200, 30);
+        add(c2);
+
+        c3 = new JCheckBox("Mobile Banking");
+        c3.setBackground(Color.WHITE);
+        c3.setFont(new Font("Raleway", Font.BOLD, 16));
+        c3.setOpaque(true);
+        c3.setBounds(100, 550, 200, 30);
+        add(c3);
+
+        c4 = new JCheckBox("EMAIL & SMS Alerts");
+        c4.setBackground(Color.WHITE);
+        c4.setFont(new Font("Raleway", Font.BOLD, 16));
+        c4.setOpaque(true);
+        c4.setBounds(350, 550, 200, 30);
+        add(c4);
+
+        c5 = new JCheckBox("Cheque Book");
+        c5.setBackground(Color.WHITE);
+        c5.setFont(new Font("Raleway", Font.BOLD, 16));
+        c5.setOpaque(true);
+        c5.setBounds(100, 600, 200, 30);
+        add(c5);
+
+        c6 = new JCheckBox("E-Statement");
+        c6.setBackground(Color.WHITE);
+        c6.setFont(new Font("Raleway", Font.BOLD, 16));
+        c6.setOpaque(true);
+        c6.setBounds(350, 600, 200, 30);
+        add(c6);
+
+        c7 = new JCheckBox("I hereby declare that the above entered details are correct to the best of my knowledge.");
+        c7.setBackground(Color.WHITE);
+        c7.setFont(new Font("Raleway", Font.BOLD, 12));
+        c7.setOpaque(true);
+        c7.setBounds(100, 680, 600, 30);
+        add(c7);
+
+        submit = new JButton("Submit");
+        submit.setBackground(Color.BLACK);
+        submit.setForeground(Color.WHITE);
+        submit.setFont(new Font("Raleway", Font.BOLD, 14));
+        submit.setBounds(250, 720, 100, 30);
+        submit.addActionListener(this);
+        add(submit);
+
+        cancel = new JButton("Cancel");
+        cancel.setBackground(Color.BLACK);
+        cancel.setForeground(Color.WHITE);
+        cancel.setFont(new Font("Raleway", Font.BOLD, 14));
+        cancel.setBounds(420, 720, 100, 30);
+        cancel.addActionListener(this);
+        add(cancel);
+
+        setVisible(true);
+        repaint();
+        revalidate();
+    }
+
+    public static String generateCardNumber() {
+        long first12Digits = ThreadLocalRandom.current().nextLong(1_000_000_000_000L, 10_000_000_000_000L);  
+        int last4Digits = ThreadLocalRandom.current().nextInt(1000, 10000);  
+        return String.format("%012d%04d", first12Digits, last4Digits);  
+    }
+
+    public static String generatePIN() {
+        int pin = ThreadLocalRandom.current().nextInt(1000, 10000);  
+        return String.format("%04d", pin); 
+    }
+
+    public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource() == submit) {
+            try {
+                String accountType = null;
+                if (r1.isSelected()) accountType = "Saving Account";
+                else if (r2.isSelected()) accountType = "Fixed Deposit Account";
+                else if (r3.isSelected()) accountType = "Current Account";
+                else if (r4.isSelected()) accountType = "Recurring Deposit Account";
+
+                if (accountType == null) {
+                    throw new Exception("Account type is required.");
+                }
+
+                String services = "";
+                if (c1.isSelected()) services += "ATM CARD, ";
+                if (c2.isSelected()) services += "Internet Banking, ";
+                if (c3.isSelected()) services += "Mobile Banking, ";
+                if (c4.isSelected()) services += "EMAIL & SMS Alerts, ";
+                if (c5.isSelected()) services += "Cheque Book, ";
+                if (c6.isSelected()) services += "E-Statement";
+
+                if (c7.isSelected()) {
+
+                    Conn c = new Conn();
+                    String query1 = "INSERT INTO signupthree (formno, accountType, cardNumber, PIN, services) values ('" 
+                                + formno + "', '" + accountType + "', '" + fullCardNumber + "', '" + fullPIN + "', '" + services + "')";
+                    String query2 = "INSERT INTO login (formno, cardNumber, PIN) VALUES('" + formno + "', '" + fullCardNumber + "', '" + fullPIN + "')";
+
+                    c.s.executeUpdate(query1);
+                    c.s.executeUpdate(query2);
+                    
+
+                    JOptionPane.showMessageDialog(null, "Form Submitted\n" +
+                            "Account Type: " + accountType + "\nServices: " + services +
+                            "\nCard Number: " + fullCardNumber + "\nPIN: " + fullPIN);
+
+                    setVisible(false);
+                    dispose();
+                } else {
+                    JOptionPane.showMessageDialog(null, "Please accept the declaration before submitting.");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, e.getMessage());
+            }
+        } else if (ae.getSource() == cancel) {
+            setVisible(false);
+            dispose();
+        }
     }
 
     public static void main(String args[]) {
-        new SignupThree();
+        new SignupThree("");
     }
 }
