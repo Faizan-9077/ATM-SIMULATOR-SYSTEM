@@ -54,7 +54,7 @@ public class Transactions extends JFrame implements ActionListener {
         image.add(balanceenquiry);
 
         exit = new JButton("Exit");
-        exit.setBounds(355, 472, 150, 30);
+        exit.setBounds(355, 471, 150, 30);
         exit.addActionListener(this);
         image.add(exit);
 
@@ -68,6 +68,14 @@ public class Transactions extends JFrame implements ActionListener {
     public void actionPerformed(ActionEvent ae) {
         if(ae.getSource() == exit) {
             System.exit(0);
+        }
+        else if (ae.getSource() == deposit) {
+            setVisible(false);
+            new Deposit(pinnumber).setVisible(true);
+        }
+        else if (ae.getSource() == withdrawl) {
+            setVisible(false);
+            new Withdrawl(pinnumber).setVisible(true);
         }
     }
 
