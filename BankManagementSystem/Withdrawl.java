@@ -1,7 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.util.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.sql.*;
 
 public class Withdrawl extends JFrame implements ActionListener {
 
@@ -53,23 +55,49 @@ public class Withdrawl extends JFrame implements ActionListener {
         if(ae.getSource() == withdraw) {
             String number = amount.getText();
             Date date = new Date();
+
             if(number.equals("")) {
                 JOptionPane.showMessageDialog(null, "Please enter the amount");
+                return; // Exit early if amount is not entered
             }
-            else{
-                try{
-                    Conn c = new Conn();
-                    String query = "INSERT INTO bank VALUES('"+pinnumber+"', '"+date+"', 'Withdrawl', '"+number+"')";
-                    c.s.executeUpdate(query);
-                    JOptionPane.showMessageDialog(null, "Rs " + number+" Withdraw Successfully");
+
+            try {
+                Conn c = new Conn();
+                // Step 1: Retrieve the current balance
+                String balanceQuery = "SELECT balance FROM bank WHERE pin = '" + pinnumber + "'";
+                ResultSet rs = c.s.executeQuery(balanceQuery);
+
+                if (rs.next()) {
+                    int currentBalance = rs.getInt("balance");
+                    int withdrawalAmount = Integer.parseInt(number);
+
+                    // Step 2: Check if withdrawal amount is valid
+                    if (withdrawalAmount > currentBalance) {
+                        JOptionPane.showMessageDialog(null, "Insufficient balance!");
+                        return; // Exit early if insufficient balance
+                    }
+
+                    // Step 3: Update the balance in the bank table
+                    int newBalance = currentBalance - withdrawalAmount;
+                    String updateBalanceQuery = "UPDATE bank SET balance = '" + newBalance + "' WHERE pin = '" + pinnumber + "'";
+                    c.s.executeUpdate(updateBalanceQuery);
+
+                    // Step 4: Insert the transaction record in the transactions table
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String formattedDate = sdf.format(date);
+                    String transactionQuery = "INSERT INTO transactions (pin, date, type, amount, balance) VALUES('" + pinnumber + "', '" + formattedDate + "', 'Withdrawl', " + withdrawalAmount + ", " + newBalance + ")";
+                    c.s.executeUpdate(transactionQuery);
+
+                    // Step 5: Show success message
+                    JOptionPane.showMessageDialog(null, "Rs " + withdrawalAmount + " Withdrawn Successfully\nNew Balance: Rs " + newBalance);
                     setVisible(false);
                     new Transactions(pinnumber).setVisible(true);
-
-                }   
-                catch (Exception e) {
-                    System.out.println(e);
+                } else {
+                    JOptionPane.showMessageDialog(null, "PIN not found!");
                 }
-                
+
+            } catch (Exception e) {
+                System.out.println(e);
             }
         }
         else if (ae.getSource() == back) {
@@ -77,6 +105,7 @@ public class Withdrawl extends JFrame implements ActionListener {
             new Transactions(pinnumber).setVisible(true);
         }
     }
+
 
     public static void main(String args[]) {
         new Withdrawl("");

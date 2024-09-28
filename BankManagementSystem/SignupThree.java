@@ -214,7 +214,7 @@ public class SignupThree extends JFrame implements ActionListener {
                             "\nCard Number: " + fullCardNumber + "\nPIN: " + fullPIN);
 
                     setVisible(false);
-                    new Deposit(fullPIN).setVisible(false);
+                    new Login().setVisible(true);
                     dispose();
                 } else {
                     JOptionPane.showMessageDialog(null, "Please accept the declaration before submitting.");

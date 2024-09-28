@@ -4,7 +4,7 @@ import java.awt.event.*;
 import java.sql.*;
 
 public class Login extends JFrame implements ActionListener {
-    
+
     JButton login, signup, clear;
     JTextField cardTextField;
     JPasswordField pinTextField;
@@ -15,9 +15,8 @@ public class Login extends JFrame implements ActionListener {
 
         setLayout(null);
 
-
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/logo.png"));
-        Image i2 = i1.getImage().getScaledInstance(100,100, Image.SCALE_DEFAULT);
+        Image i2 = i1.getImage().getScaledInstance(100, 100, Image.SCALE_DEFAULT);
         ImageIcon i3 = new ImageIcon(i2);
         JLabel label = new JLabel(i3);
         label.setBounds(70, 10, 100, 100);
@@ -35,7 +34,7 @@ public class Login extends JFrame implements ActionListener {
 
         cardTextField = new JTextField();
         cardTextField.setBounds(300, 150, 230, 30);
-        cardTextField.setFont(new Font ("Arial",Font.BOLD, 14));
+        cardTextField.setFont(new Font("Arial", Font.BOLD, 14));
         add(cardTextField);
 
         JLabel pin = new JLabel("PIN:");
@@ -45,7 +44,7 @@ public class Login extends JFrame implements ActionListener {
 
         pinTextField = new JPasswordField();
         pinTextField.setBounds(300, 220, 230, 30);
-        pinTextField.setFont(new Font ("Arial",Font.BOLD, 14));
+        pinTextField.setFont(new Font("Arial", Font.BOLD, 14));
         add(pinTextField);
 
         login = new JButton("SIGN IN");
@@ -68,33 +67,41 @@ public class Login extends JFrame implements ActionListener {
         signup.setForeground(Color.WHITE);
         signup.addActionListener(this);
         add(signup);
-        
 
         getContentPane().setBackground(Color.WHITE);
-        
-        setSize(800,480);
+
+        setSize(800, 480);
         setVisible(true);
         setLocation(350, 200);
     }
-    
-    public void actionPerformed (ActionEvent ae){
-        if(ae.getSource() == clear) {
+
+    public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource() == clear) {
             cardTextField.setText("");
             pinTextField.setText("");
-        }
-        else if(ae.getSource()== login) {
+        } else if (ae.getSource() == login) {
             Conn c = new Conn();
             String cardnumber = cardTextField.getText();
             String pinnumber = pinTextField.getText();
-            String query = "SELECT * FROM login where cardnumber = '" + cardnumber + "' and pin = '" + pinnumber+ "'";
+            String query = "SELECT * FROM login WHERE cardnumber = '" + cardnumber + "' AND pin = '" + pinnumber + "'";
 
             try {
                 ResultSet rs = c.s.executeQuery(query);
-                if(rs.next()) {
+                if (rs.next()) {
+                    // User login successful, now check if PIN exists in the bank table
+                    String checkPinQuery = "SELECT * FROM bank WHERE pin = '" + pinnumber + "'";
+                    ResultSet rsBank = c.s.executeQuery(checkPinQuery);
+
+                    if (!rsBank.next()) {
+                        // If no record exists in the bank table for this PIN, insert it with a balance of 0
+                        String insertBankQuery = "INSERT INTO bank (pin, balance) VALUES ('" + pinnumber + "', 0)";
+                        c.s.executeUpdate(insertBankQuery);
+                        System.out.println("New bank account created for PIN: " + pinnumber);
+                    }
+
                     setVisible(false);
                     new Transactions(pinnumber).setVisible(true);
-                }
-                else{
+                } else {
                     JOptionPane.showMessageDialog(null, "Incorrect Card Number or PIN");
                 }
 
@@ -102,11 +109,12 @@ public class Login extends JFrame implements ActionListener {
                 System.out.println(e);
             }
 
-        }
-        else if(ae.getSource() == signup) {
-            
+        } else if (ae.getSource() == signup) {
+            setVisible(false);
+            new SignupOne().setVisible(true);
         }
     }
+
     public static void main(String args[]) {
         new Login();
     }

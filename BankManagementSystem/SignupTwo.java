@@ -1,7 +1,6 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.ResultSet;
 
 public class SignupTwo extends JFrame implements ActionListener {
 
@@ -172,12 +171,15 @@ public class SignupTwo extends JFrame implements ActionListener {
             return;
         }
 
+        seducation = seducation.replace("'", "''");
+
         try {
             Conn c = new Conn();
             String query = "INSERT INTO signuptwo values ('" + formno + "', '" + sreligion + "', '" + scategory + "', '" + sincome + "', '" + seducation + "', '" + soccupation + "', '" + span + "', '" + saadhar + "', '" + seniorcitizen + "', '" + existingaccount + "')";
             c.s.executeUpdate(query);
             JOptionPane.showMessageDialog(null, "Details added successfully");
             setVisible(false);
+            new SignupThree(formno).setVisible(true);
             
         } catch (Exception e) {
             System.out.println(e);
