@@ -1,1 +1,0 @@
-# This is my First Project Using Core JAVA.
