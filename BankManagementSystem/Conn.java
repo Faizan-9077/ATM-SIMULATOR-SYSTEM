@@ -11,7 +11,7 @@ public class Conn {
             s=c.createStatement();
         }
         catch (Exception e) {
-            System.out.println(c);
+            System.out.println(e);
         }
     }
 }

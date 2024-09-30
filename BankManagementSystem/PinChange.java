@@ -4,11 +4,13 @@ import java.awt.event.*;
 
 public class PinChange extends JFrame implements ActionListener {
 
-    JTextField pin, repin;
+    JPasswordField pin, repin;
     JButton change, back;
+    String pinnumber;
 
-    PinChange(String pinchange) {
+    PinChange(String pinnumber) {
 
+        this.pinnumber = pinnumber;
         setLayout(null);
 
         ImageIcon i1 = new ImageIcon(ClassLoader.getSystemResource("icons/atm.jpg"));
@@ -30,7 +32,7 @@ public class PinChange extends JFrame implements ActionListener {
         pintext.setBounds(165, 290, 180, 25);
         image.add(pintext);
 
-        pin = new JTextField();
+        pin = new JPasswordField();
         pin.setFont(new Font("Raleway",Font.BOLD, 19));
         pin.setBounds(330, 290, 180, 21);
         image.add(pin);
@@ -41,7 +43,7 @@ public class PinChange extends JFrame implements ActionListener {
         repintext.setBounds(165, 330, 180, 25);
         image.add(repintext);
 
-        repin = new JTextField();
+        repin = new JPasswordField();
         repin.setFont(new Font("Raleway",Font.BOLD, 19));
         repin.setBounds(330, 330, 180, 21);
         image.add(repin);
@@ -67,6 +69,32 @@ public class PinChange extends JFrame implements ActionListener {
     try{
         String npin = pin.getText();
         String rpin = repin.getText();
+
+        if(!npin.equals(rpin)) {
+            JOptionPane.showMessageDialog(null, "Entered PIN does not match");
+            return;
+        }
+
+        if(npin.equals("")) {
+            JOptionPane.showMessageDialog(null, "Please enter the pin");
+            return;
+        }
+
+        Conn c = new Conn();
+        String query1 = "UPDATE bank SET pin = '"+rpin+"' WHERE pin='"+pinnumber+"'";
+        String query2 = "UPDATE login SET pin = '"+rpin+"' WHERE pin='"+pinnumber+"'";
+        String query3 = "UPDATE signupthree SET pin = '"+rpin+"' WHERE pin='"+pinnumber+"'";
+        String query4 = "UPDATE transactions SET pin = '"+rpin+"' WHERE pin='"+pinnumber+"'";
+
+        c.s.executeUpdate(query1);
+        c.s.executeUpdate(query2);
+        c.s.executeUpdate(query3);
+        c.s.executeUpdate(query4);
+
+        JOptionPane.showMessageDialog(null, "PIN changed successfully");
+
+        setVisible(false);
+        new Transactions(rpin).setVisible(true);
 
     }
     catch (Exception e) {

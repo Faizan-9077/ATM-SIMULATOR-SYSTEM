@@ -80,33 +80,44 @@ public class Login extends JFrame implements ActionListener {
             cardTextField.setText("");
             pinTextField.setText("");
         } else if (ae.getSource() == login) {
-            Conn c = new Conn();
+            Conn c = new Conn();  // Initialize connection to database
             String cardnumber = cardTextField.getText();
             String pinnumber = pinTextField.getText();
-            String query = "SELECT * FROM login WHERE cardnumber = '" + cardnumber + "' AND pin = '" + pinnumber + "'";
 
-            try {
-                ResultSet rs = c.s.executeQuery(query);
-                if (rs.next()) {
-                    // User login successful, now check if PIN exists in the bank table
-                    String checkPinQuery = "SELECT * FROM bank WHERE pin = '" + pinnumber + "'";
-                    ResultSet rsBank = c.s.executeQuery(checkPinQuery);
 
-                    if (!rsBank.next()) {
-                        // If no record exists in the bank table for this PIN, insert it with a balance of 0
-                        String insertBankQuery = "INSERT INTO bank (pin, balance) VALUES ('" + pinnumber + "', 0)";
-                        c.s.executeUpdate(insertBankQuery);
-                        System.out.println("New bank account created for PIN: " + pinnumber);
+            if (cardnumber.equals("") || pinnumber.equals("")) {
+                JOptionPane.showMessageDialog(null, "Card Number and PIN cannot be empty");
+                return;
+            }
+
+            if (c.s != null) {  // Ensure the Statement object is properly initialized
+                String query = "SELECT * FROM login WHERE cardnumber = '" + cardnumber + "' AND pin = '" + pinnumber + "'";
+                try {
+                    ResultSet rs = c.s.executeQuery(query);
+
+                    if (rs.next()) {
+                        // User login successful, now check if PIN exists in the bank table
+                        String checkPinQuery = "SELECT * FROM bank WHERE pin = '" + pinnumber + "'";
+                        ResultSet rsBank = c.s.executeQuery(checkPinQuery);
+
+                        if (!rsBank.next()) {
+                            // If no record exists in the bank table for this PIN, insert it with a balance of 0
+                            String insertBankQuery = "INSERT INTO bank (pin, balance) VALUES ('" + pinnumber + "', 0)";
+                            c.s.executeUpdate(insertBankQuery);
+                            System.out.println("New bank account created for PIN: " + pinnumber);
+                        }
+
+                        setVisible(false);
+                        new Transactions(pinnumber).setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Incorrect Card Number or PIN");
                     }
 
-                    setVisible(false);
-                    new Transactions(pinnumber).setVisible(true);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Incorrect Card Number or PIN");
+                } catch (Exception e) {
+                    System.out.println(e);
                 }
-
-            } catch (Exception e) {
-                System.out.println(e);
+            } else {
+                JOptionPane.showMessageDialog(null, "Database connection failed.");
             }
 
         } else if (ae.getSource() == signup) {
@@ -114,6 +125,7 @@ public class Login extends JFrame implements ActionListener {
             new SignupOne().setVisible(true);
         }
     }
+
 
     public static void main(String args[]) {
         new Login();
