@@ -27,9 +27,9 @@ public class Login extends JFrame implements ActionListener {
         text.setBounds(200, 40, 400, 40);
         add(text);
 
-        JLabel cardno = new JLabel("Card No.");
+        JLabel cardno = new JLabel("Account No.");
         cardno.setFont(new Font("Raleway", Font.BOLD, 28));
-        cardno.setBounds(120, 150, 150, 30);
+        cardno.setBounds(120, 150, 180, 30);
         add(cardno);
 
         cardTextField = new JTextField();
@@ -73,6 +73,7 @@ public class Login extends JFrame implements ActionListener {
         setSize(800, 480);
         setVisible(true);
         setLocation(350, 200);
+
     }
 
     public void actionPerformed(ActionEvent ae) {
@@ -86,22 +87,21 @@ public class Login extends JFrame implements ActionListener {
 
 
             if (cardnumber.equals("") || pinnumber.equals("")) {
-                JOptionPane.showMessageDialog(null, "Card Number and PIN cannot be empty");
+                JOptionPane.showMessageDialog(null, "Account Number and PIN cannot be empty");
                 return;
             }
 
             if (c.s != null) {  // Ensure the Statement object is properly initialized
-                String query = "SELECT * FROM login WHERE cardnumber = '" + cardnumber + "' AND pin = '" + pinnumber + "'";
+                String query = "SELECT * FROM login WHERE accountNumber = '" + cardnumber + "' AND pin = '" + pinnumber + "'";
                 try {
                     ResultSet rs = c.s.executeQuery(query);
 
                     if (rs.next()) {
-                        // User login successful, now check if PIN exists in the bank table
+
                         String checkPinQuery = "SELECT * FROM bank WHERE pin = '" + pinnumber + "'";
                         ResultSet rsBank = c.s.executeQuery(checkPinQuery);
 
                         if (!rsBank.next()) {
-                            // If no record exists in the bank table for this PIN, insert it with a balance of 0
                             String insertBankQuery = "INSERT INTO bank (pin, balance) VALUES ('" + pinnumber + "', 0)";
                             c.s.executeUpdate(insertBankQuery);
                             System.out.println("New bank account created for PIN: " + pinnumber);
@@ -110,7 +110,7 @@ public class Login extends JFrame implements ActionListener {
                         setVisible(false);
                         new Transactions(pinnumber).setVisible(true);
                     } else {
-                        JOptionPane.showMessageDialog(null, "Incorrect Card Number or PIN");
+                        JOptionPane.showMessageDialog(null, "Incorrect Account Number or PIN");
                     }
 
                 } catch (Exception e) {

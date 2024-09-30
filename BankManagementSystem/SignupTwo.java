@@ -172,6 +172,7 @@ public class SignupTwo extends JFrame implements ActionListener {
         }
 
         seducation = seducation.replace("'", "''");
+        soccupation = soccupation.replace("-", "''");
 
         try {
             Conn c = new Conn();

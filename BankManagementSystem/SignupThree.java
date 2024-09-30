@@ -59,7 +59,7 @@ public class SignupThree extends JFrame implements ActionListener {
         groupaccount.add(r3);
         groupaccount.add(r4);
 
-        JLabel card = new JLabel("Card Number");
+        JLabel card = new JLabel("Account Number");
         card.setFont(new Font("Raleway", Font.BOLD, 22));
         card.setBounds(100, 300, 200, 30);
         add(card);
@@ -70,7 +70,7 @@ public class SignupThree extends JFrame implements ActionListener {
         number.setBounds(330, 300, 300, 30);
         add(number);
 
-        JLabel carddetail = new JLabel("Your 16-Digit Card Number");
+        JLabel carddetail = new JLabel("Your 16-Digit Account Number");
         carddetail.setFont(new Font("Raleway", Font.BOLD, 12));
         carddetail.setBounds(100, 330, 300, 20);
         add(carddetail);
@@ -164,10 +164,11 @@ public class SignupThree extends JFrame implements ActionListener {
         setVisible(true);
         repaint();
         revalidate();
+        setUndecorated(true);
     }
 
     public static String generateCardNumber() {
-        long first12Digits = ThreadLocalRandom.current().nextLong(1_000_000_000_000L, 10_000_000_000_000L);  
+        long first12Digits = ThreadLocalRandom.current().nextLong(100_000_000_000L, 1_000_000_000_000L);
         int last4Digits = ThreadLocalRandom.current().nextInt(1000, 10000);  
         return String.format("%012d%04d", first12Digits, last4Digits);  
     }
@@ -201,9 +202,9 @@ public class SignupThree extends JFrame implements ActionListener {
                 if (c7.isSelected()) {
 
                     Conn c = new Conn();
-                    String query1 = "INSERT INTO signupthree (formno, accountType, cardNumber, PIN, services) values ('" 
+                    String query1 = "INSERT INTO signupthree (formno, accountType, accountNumber, PIN, services) values ('"
                                 + formno + "', '" + accountType + "', '" + fullCardNumber + "', '" + fullPIN + "', '" + services + "')";
-                    String query2 = "INSERT INTO login (formno, cardNumber, PIN) VALUES('" + formno + "', '" + fullCardNumber + "', '" + fullPIN + "')";
+                    String query2 = "INSERT INTO login (formno, accountNumber, PIN) VALUES('" + formno + "', '" + fullCardNumber + "', '" + fullPIN + "')";
 
                     c.s.executeUpdate(query1);
                     c.s.executeUpdate(query2);
@@ -211,7 +212,7 @@ public class SignupThree extends JFrame implements ActionListener {
 
                     JOptionPane.showMessageDialog(null, "Form Submitted\n" +
                             "Account Type: " + accountType + "\nServices: " + services +
-                            "\nCard Number: " + fullCardNumber + "\nPIN: " + fullPIN);
+                            "\nAccount Number: " + fullCardNumber + "\nPIN: " + fullPIN);
 
                     setVisible(false);
                     new Login().setVisible(true);

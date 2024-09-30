@@ -29,6 +29,7 @@ public class SignupOne extends JFrame implements ActionListener {
 
         setSize(850, 800);
         setLocation(350, 10);
+        setUndecorated(true);
         setVisible(true);
 
         JLabel personalDetails = new JLabel("Page 1: Personal Details");
