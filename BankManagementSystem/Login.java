@@ -90,6 +90,15 @@ public class Login extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null, "Account Number and PIN cannot be empty");
                 return;
             }
+            if (!cardnumber.matches("\\d{16}")) {
+                JOptionPane.showMessageDialog(null, "Invalid Account Number. It should be 16 digits long.");
+                return;
+            }
+
+            if (!pinnumber.matches("\\d{4}")) {
+                JOptionPane.showMessageDialog(null, "Invalid PIN. It should be 4 digits long.");
+                return;
+            }
 
             if (c.s != null) {  // Ensure the Statement object is properly initialized
                 String query = "SELECT * FROM login WHERE accountNumber = '" + cardnumber + "' AND pin = '" + pinnumber + "'";

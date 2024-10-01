@@ -18,12 +18,12 @@ public class SignupTwo extends JFrame implements ActionListener {
         setTitle("NEW ACCOUNT APPLICATION FORM - PAGE 2");
 
         JLabel additionalDetails = new JLabel("Page 2: Additional Details");
-        additionalDetails.setFont(new Font("Raleway", Font.BOLD, 22));
+        additionalDetails.setFont(new Font("Arial", Font.BOLD, 22));
         additionalDetails.setBounds(290, 80, 400, 30);
         add(additionalDetails);
 
         JLabel rel = new JLabel("Religion:");
-        rel.setFont(new Font("Raleway", Font.BOLD, 22));
+        rel.setFont(new Font("Arial", Font.BOLD, 22));
         rel.setBounds(100, 140, 100, 30);
         add(rel);
 
@@ -34,7 +34,7 @@ public class SignupTwo extends JFrame implements ActionListener {
         add(religion);
 
         JLabel categ = new JLabel("Category:");
-        categ.setFont(new Font("Raleway", Font.BOLD, 22));
+        categ.setFont(new Font("Arial", Font.BOLD, 22));
         categ.setBounds(100, 190, 200, 30);
         add(categ);
 
@@ -45,7 +45,7 @@ public class SignupTwo extends JFrame implements ActionListener {
         add(category);
 
         JLabel inc = new JLabel("Income:");
-        inc.setFont(new Font("Raleway", Font.BOLD, 22));
+        inc.setFont(new Font("Arial", Font.BOLD, 22));
         inc.setBounds(100, 240, 200, 30);
         add(inc);
 
@@ -56,12 +56,12 @@ public class SignupTwo extends JFrame implements ActionListener {
         add(income);
 
         JLabel edu = new JLabel("Educational");
-        edu.setFont(new Font("Raleway", Font.BOLD, 22));
+        edu.setFont(new Font("Arial", Font.BOLD, 22));
         edu.setBounds(100, 290, 200, 30);
         add(edu);
 
         JLabel qual = new JLabel("Qualification:");
-        qual.setFont(new Font("Raleway", Font.BOLD, 22));
+        qual.setFont(new Font("Arial", Font.BOLD, 22));
         qual.setBounds(100, 315, 200, 30);
         add(qual);
 
@@ -72,7 +72,7 @@ public class SignupTwo extends JFrame implements ActionListener {
         add(education);
 
         JLabel occu = new JLabel("Occupation:");
-        occu.setFont(new Font("Raleway", Font.BOLD, 22));
+        occu.setFont(new Font("Arial", Font.BOLD, 22));
         occu.setBounds(100, 390, 200, 30);
         add(occu);
 
@@ -83,27 +83,27 @@ public class SignupTwo extends JFrame implements ActionListener {
         add(occupation);
 
         JLabel pan = new JLabel("PAN Number:");
-        pan.setFont(new Font("Raleway", Font.BOLD, 22));
+        pan.setFont(new Font("Arial", Font.BOLD, 22));
         pan.setBounds(100, 440, 200, 30);
         add(pan);
 
         panTextField = new JTextField();
-        panTextField.setFont(new Font("Raleway", Font.BOLD, 14));
+        panTextField.setFont(new Font("Arial", Font.BOLD, 14));
         panTextField.setBounds(300, 440, 400, 30);
         add(panTextField);
 
         JLabel aadh = new JLabel("Aadhar Number:");
-        aadh.setFont(new Font("Raleway", Font.BOLD, 22));
+        aadh.setFont(new Font("Arial", Font.BOLD, 22));
         aadh.setBounds(100, 490, 200, 30);
         add(aadh);
 
         aadhar = new JTextField();
-        aadhar.setFont(new Font("Raleway", Font.BOLD, 14));
+        aadhar.setFont(new Font("Arial", Font.BOLD, 14));
         aadhar.setBounds(300, 490, 400, 30);
         add(aadhar);
 
         JLabel senior = new JLabel("Senior Citizen:");
-        senior.setFont(new Font("Raleway", Font.BOLD, 22));
+        senior.setFont(new Font("Arial", Font.BOLD, 22));
         senior.setBounds(100, 540, 200, 30);
         add(senior);
 
@@ -122,7 +122,7 @@ public class SignupTwo extends JFrame implements ActionListener {
         seniorGroup.add(sno);
 
         JLabel existAcc = new JLabel("Existing Account:");
-        existAcc.setFont(new Font("Raleway", Font.BOLD, 22));
+        existAcc.setFont(new Font("Arial", Font.BOLD, 22));
         existAcc.setBounds(100, 590, 200, 30);
         add(existAcc);
 
@@ -143,7 +143,7 @@ public class SignupTwo extends JFrame implements ActionListener {
         next = new JButton("Next");
         next.setBackground(Color.BLACK);
         next.setForeground(Color.WHITE);
-        next.setFont(new Font("Raleway", Font.BOLD, 14));
+        next.setFont(new Font("Arial", Font.BOLD, 14));
         next.setBounds(620, 660, 80, 30);
         next.addActionListener(this);
         add(next);
@@ -168,6 +168,16 @@ public class SignupTwo extends JFrame implements ActionListener {
 
         if (span.equals("") || saadhar.equals("")) {
             JOptionPane.showMessageDialog(null, "All fields are required");
+            return;
+        }
+
+        if (!saadhar.matches("^\\d{12}$")) {
+            JOptionPane.showMessageDialog(null, "Invalid Aadhaar Number. It must be a 12-digit number.");
+            return;
+        }
+
+        if (!span.matches("^[A-Z]{5}[0-9]{4}[A-Z]{1}$")) {
+            JOptionPane.showMessageDialog(null, "Invalid PAN Number. It must follow the format XXXXX1234X.");
             return;
         }
 

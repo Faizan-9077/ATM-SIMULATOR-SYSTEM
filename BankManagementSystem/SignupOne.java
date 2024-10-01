@@ -5,6 +5,8 @@ import java.awt.event.*;
 import java.text.SimpleDateFormat;
 import java.sql.ResultSet;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 
 public class SignupOne extends JFrame implements ActionListener {
@@ -21,7 +23,7 @@ public class SignupOne extends JFrame implements ActionListener {
         setLayout(null);
 
         formnoLabel = new JLabel();
-        formnoLabel.setFont(new Font("Raleway", Font.BOLD, 38));
+        formnoLabel.setFont(new Font("Arial", Font.BOLD, 38));
         formnoLabel.setBounds(140, 20, 600, 40);
         add(formnoLabel);
 
@@ -33,32 +35,32 @@ public class SignupOne extends JFrame implements ActionListener {
         setVisible(true);
 
         JLabel personalDetails = new JLabel("Page 1: Personal Details");
-        personalDetails.setFont(new Font("Raleway", Font.BOLD, 22));
+        personalDetails.setFont(new Font("Arial", Font.BOLD, 22));
         personalDetails.setBounds(290, 80, 400, 30);
         add(personalDetails);
 
         JLabel name = new JLabel("Name:");
-        name.setFont(new Font("Raleway", Font.BOLD, 22));
+        name.setFont(new Font("Arial", Font.BOLD, 22));
         name.setBounds(100, 140, 100, 30);
         add(name);
 
         nameTextField = new JTextField();
-        nameTextField.setFont(new Font("Raleway", Font.BOLD, 14));
+        nameTextField.setFont(new Font("Arial", Font.BOLD, 14));
         nameTextField.setBounds(300, 140, 400, 30);
         add(nameTextField);
 
         JLabel fname = new JLabel("Father's Name:");
-        fname.setFont(new Font("Raleway", Font.BOLD, 22));
+        fname.setFont(new Font("Arial", Font.BOLD, 22));
         fname.setBounds(100, 190, 200, 30);
         add(fname);
 
         fnameTextField = new JTextField();
-        fnameTextField.setFont(new Font("Raleway", Font.BOLD, 14));
+        fnameTextField.setFont(new Font("Arial", Font.BOLD, 14));
         fnameTextField.setBounds(300, 190, 400, 30);
         add(fnameTextField);
 
         JLabel dob = new JLabel("Date of Birth:");
-        dob.setFont(new Font("Raleway", Font.BOLD, 22));
+        dob.setFont(new Font("Arial", Font.BOLD, 22));
         dob.setBounds(100, 240, 200, 30);
         add(dob);
 
@@ -70,7 +72,7 @@ public class SignupOne extends JFrame implements ActionListener {
         add(dateSpinner);
 
         JLabel gender = new JLabel("Gender:");
-        gender.setFont(new Font("Raleway", Font.BOLD, 22));
+        gender.setFont(new Font("Arial", Font.BOLD, 22));
         gender.setBounds(100, 290, 200, 30);
         add(gender);
 
@@ -89,17 +91,17 @@ public class SignupOne extends JFrame implements ActionListener {
         gendergroup.add(female);
 
         JLabel email = new JLabel("Email Address:");
-        email.setFont(new Font("Raleway", Font.BOLD, 22));
+        email.setFont(new Font("Arial", Font.BOLD, 22));
         email.setBounds(100, 340, 200, 30);
         add(email);
 
         emailTextField = new JTextField();
-        emailTextField.setFont(new Font("Raleway", Font.BOLD, 14));
+        emailTextField.setFont(new Font("Arial", Font.BOLD, 14));
         emailTextField.setBounds(300, 340, 400, 30);
         add(emailTextField);
 
         JLabel marital = new JLabel("Marital Status:");
-        marital.setFont(new Font("Raleway", Font.BOLD, 22));
+        marital.setFont(new Font("Arial", Font.BOLD, 22));
         marital.setBounds(100, 390, 200, 30);
         add(marital);
 
@@ -124,49 +126,49 @@ public class SignupOne extends JFrame implements ActionListener {
         maritalgroup.add(other);
 
         JLabel address = new JLabel("Address:");
-        address.setFont(new Font("Raleway", Font.BOLD, 22));
+        address.setFont(new Font("Arial", Font.BOLD, 22));
         address.setBounds(100, 440, 200, 30);
         add(address);
 
         addressTextField = new JTextField();
-        addressTextField.setFont(new Font("Raleway", Font.BOLD, 14));
+        addressTextField.setFont(new Font("Arial", Font.BOLD, 14));
         addressTextField.setBounds(300, 440, 400, 30);
         add(addressTextField);
 
         JLabel city = new JLabel("City:");
-        city.setFont(new Font("Raleway", Font.BOLD, 22));
+        city.setFont(new Font("Arial", Font.BOLD, 22));
         city.setBounds(100, 490, 200, 30);
         add(city);
 
         cityTextField = new JTextField();
-        cityTextField.setFont(new Font("Raleway", Font.BOLD, 14));
+        cityTextField.setFont(new Font("Arial", Font.BOLD, 14));
         cityTextField.setBounds(300, 490, 400, 30);
         add(cityTextField);
 
         JLabel state = new JLabel("State:");
-        state.setFont(new Font("Raleway", Font.BOLD, 22));
+        state.setFont(new Font("Arial", Font.BOLD, 22));
         state.setBounds(100, 540, 200, 30);
         add(state);
 
         stateTextField = new JTextField();
-        stateTextField.setFont(new Font("Raleway", Font.BOLD, 14));
+        stateTextField.setFont(new Font("Arial", Font.BOLD, 14));
         stateTextField.setBounds(300, 540, 400, 30);
         add(stateTextField);
 
         JLabel pincode = new JLabel("Pin Code:");
-        pincode.setFont(new Font("Raleway", Font.BOLD, 22));
+        pincode.setFont(new Font("Arial", Font.BOLD, 22));
         pincode.setBounds(100, 590, 200, 30);
         add(pincode);
 
         pinTextField = new JTextField();
-        pinTextField.setFont(new Font("Raleway", Font.BOLD, 14));
+        pinTextField.setFont(new Font("Arial", Font.BOLD, 14));
         pinTextField.setBounds(300, 590, 400, 30);
         add(pinTextField);
 
         next = new JButton("Next");
         next.setBackground(Color.BLACK);
         next.setForeground(Color.WHITE);
-        next.setFont(new Font("Raleway", Font.BOLD, 14));
+        next.setFont(new Font("Arial", Font.BOLD, 14));
         next.setBounds(620, 660, 80, 30);
         next.addActionListener(this);
         add(next);
@@ -211,29 +213,31 @@ public class SignupOne extends JFrame implements ActionListener {
         String state = stateTextField.getText();
         String pin = pinTextField.getText();
 
-        if (name.equals("")) {
-            JOptionPane.showMessageDialog(null, "Name is required");
-            return; // Stop execution if name is not filled
-        } else if (fname.equals("")) {
-            JOptionPane.showMessageDialog(null, "Father's name is required");
+        if (name.equals("") || !name.matches("[a-zA-Z ]+")) {
+            JOptionPane.showMessageDialog(null, "Invalid Name: Only alphabets and spaces allowed.");
+            return;
+
+        } if (fname.equals("") || !fname.matches("[a-zA-Z ]+")) {
+            JOptionPane.showMessageDialog(null, "Invalid Father's Name: Only alphabets and spaces allowed.");
             return; // Stop execution if father's name is not filled
-        } else if (email.equals("")) {
-            JOptionPane.showMessageDialog(null, "Email is required");
-            return; // Stop execution if email is not filled
+        } if (email.equals("") || !validateEmail(email)) {
+            JOptionPane.showMessageDialog(null, "Invalid Email.");
+            return;
         } else if (dob.equals("")) {
             JOptionPane.showMessageDialog(null, "Date of Birth is required");
-            return; // Stop execution if date of birth is not selected
+            return;
         } else if (address.equals("")) {
             JOptionPane.showMessageDialog(null, "Address is required");
-            return; // Stop execution if address is not filled
+            return;
         } else if (city.equals("")) {
             JOptionPane.showMessageDialog(null, "City is required");
-            return; // Stop execution if city is not filled
+            return;
         } else if (state.equals("")) {
             JOptionPane.showMessageDialog(null, "State is required");
-            return; // Stop execution if state is not filled
-        } else if (pin.equals("")) {
-            JOptionPane.showMessageDialog(null, "Pin Code is required");
+            return;
+        } if (pin.equals("") || !pin.matches("\\d{6}")) {
+            JOptionPane.showMessageDialog(null, "Invalid Pin Code: Must be 6 digits.");
+            return;
         }
 
         try {
@@ -274,10 +278,16 @@ public class SignupOne extends JFrame implements ActionListener {
         other.setSelected(false);
     }
 
-    public static void main(String[] args) {
-        new SignupOne();
+    private boolean validateEmail(String email) {
+        String emailRegex = "^[a-zA-Z0-9]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 
-}
+        public static void main (String args[]) {
+            new SignupOne();
+        }
+    }
         
    
