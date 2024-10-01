@@ -18,6 +18,7 @@ public class SignupOne extends JFrame implements ActionListener {
     SpinnerDateModel dateModel;
     JSpinner dateSpinner;
     JSpinner.DateEditor dateEditor;
+    JComboBox<String> stateComboBox;
 
     SignupOne() {
         setLayout(null);
@@ -150,10 +151,18 @@ public class SignupOne extends JFrame implements ActionListener {
         state.setBounds(100, 540, 200, 30);
         add(state);
 
-        stateTextField = new JTextField();
-        stateTextField.setFont(new Font("Arial", Font.BOLD, 14));
-        stateTextField.setBounds(300, 540, 400, 30);
-        add(stateTextField);
+        String[] states = { "Andhra Pradesh", "Arunachal Pradesh", "Assam", "Bihar", "Chhattisgarh", "Goa", "Gujarat",
+                "Haryana", "Himachal Pradesh", "Jharkhand", "Karnataka", "Kerala", "Madhya Pradesh",
+                "Maharashtra", "Manipur", "Meghalaya", "Mizoram", "Nagaland", "Odisha", "Punjab",
+                "Rajasthan", "Sikkim", "Tamil Nadu", "Telangana", "Tripura", "Uttar Pradesh",
+                "Uttarakhand", "West Bengal"};
+
+        stateComboBox = new JComboBox<>(states);
+        stateComboBox.setBounds(300, 540, 400, 30);
+        stateComboBox.setFont(new Font("Arial", Font.BOLD, 14));
+        stateComboBox.setBackground(Color.WHITE);
+        add(stateComboBox);
+
 
         JLabel pincode = new JLabel("Pin Code:");
         pincode.setFont(new Font("Arial", Font.BOLD, 22));
@@ -210,7 +219,7 @@ public class SignupOne extends JFrame implements ActionListener {
 
         String address = addressTextField.getText();
         String city = cityTextField.getText();
-        String state = stateTextField.getText();
+        String state = (String) stateComboBox.getSelectedItem();
         String pin = pinTextField.getText();
 
         if (name.equals("") || !name.matches("[a-zA-Z ]+")) {
@@ -237,6 +246,13 @@ public class SignupOne extends JFrame implements ActionListener {
             return;
         } if (pin.equals("") || !pin.matches("\\d{6}")) {
             JOptionPane.showMessageDialog(null, "Invalid Pin Code: Must be 6 digits.");
+            return;
+        }
+
+        String states = (String) stateComboBox.getSelectedItem();
+
+        if (state.equals("")) {
+            JOptionPane.showMessageDialog(null, "State is required");
             return;
         }
 
@@ -268,7 +284,6 @@ public class SignupOne extends JFrame implements ActionListener {
         emailTextField.setText("");
         addressTextField.setText("");
         cityTextField.setText("");
-        stateTextField.setText("");
         pinTextField.setText("");
         dateSpinner.setValue(new Date());
         male.setSelected(false);
