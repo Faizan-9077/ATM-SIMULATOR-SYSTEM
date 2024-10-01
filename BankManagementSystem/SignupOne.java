@@ -20,6 +20,7 @@ public class SignupOne extends JFrame implements ActionListener {
     JSpinner.DateEditor dateEditor;
     JComboBox<String> stateComboBox;
 
+
     SignupOne() {
         setLayout(null);
 
